@@ -1,5 +1,7 @@
 package rx;
 
+import java.util.function.Consumer;
+
 public class ObservableImpl<T> implements Observable<T> {
 
     public static <K> ObservableImpl<K> just(K i) {
@@ -30,7 +32,15 @@ public class ObservableImpl<T> implements Observable<T> {
     @Override
     public Subscription subscribe(Observer<T> s) {
         onSubscrabe.call(s);
-        return null;
+        return s;
+    }
+
+    public Subscription subscribe(Consumer<? super T> c) {
+
+        Observer<T> observer = new Subscriber<>(c);
+
+
+        return subscribe(observer);
     }
 
 
